@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D7D5D641F41B55A00531856 /* ReadData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7D5D631F41B55A00531856 /* ReadData.swift */; };
+		0D7D5D661F41BC2900531856 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D7D5D651F41BC2900531856 /* GoogleService-Info.plist */; };
+		0D7D5D681F41D60000531856 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7D5D671F41D60000531856 /* Category.swift */; };
+		0D7D5D6A1F41D61100531856 /* SubCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7D5D691F41D61100531856 /* SubCategory.swift */; };
+		0D7D5D6C1F41D61D00531856 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7D5D6B1F41D61D00531856 /* Product.swift */; };
+		0D7D5D6E1F41E20700531856 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7D5D6D1F41E20700531856 /* Helper.swift */; };
 		0DEF44521F35E4010072218D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF44511F35E4010072218D /* AppDelegate.swift */; };
 		0DEF44541F35E4010072218D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEF44531F35E4010072218D /* ViewController.swift */; };
 		0DEF44571F35E4010072218D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DEF44551F35E4010072218D /* Main.storyboard */; };
@@ -41,9 +47,16 @@
 		92A6D5E11F3CA3E80033959C /* receiver.png in Resources */ = {isa = PBXBuildFile; fileRef = 92A6D5DD1F3CA3E80033959C /* receiver.png */; };
 		92A6D5E21F3CA3E80033959C /* user-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 92A6D5DE1F3CA3E80033959C /* user-icon.png */; };
 		92FAC4511F3B2C0F0038C210 /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92FAC4501F3B2C0F0038C210 /* SliderView.swift */; };
+		98EE2A1B02EB117E211CEF05 /* Pods_BuenPrecio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81085F6EB7F23F7A10079977 /* Pods_BuenPrecio.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0D7D5D631F41B55A00531856 /* ReadData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadData.swift; sourceTree = "<group>"; };
+		0D7D5D651F41BC2900531856 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0D7D5D671F41D60000531856 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		0D7D5D691F41D61100531856 /* SubCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubCategory.swift; sourceTree = "<group>"; };
+		0D7D5D6B1F41D61D00531856 /* Product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		0D7D5D6D1F41E20700531856 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		0DEF444E1F35E4010072218D /* BuenPrecio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuenPrecio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DEF44511F35E4010072218D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0DEF44531F35E4010072218D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +71,8 @@
 		0DEF446C1F35F2A30072218D /* container.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = container.png; sourceTree = "<group>"; };
 		0DEF446E1F35F5D20072218D /* home_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_bg.png; sourceTree = "<group>"; };
 		0DEF44701F35F74B0072218D /* demoitem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = demoitem.png; sourceTree = "<group>"; };
+		21937105374208F781428EAC /* Pods-BuenPrecio.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuenPrecio.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BuenPrecio/Pods-BuenPrecio.debug.xcconfig"; sourceTree = "<group>"; };
+		81085F6EB7F23F7A10079977 /* Pods_BuenPrecio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BuenPrecio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9299C8EA1F3D99900022500B /* left_Arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = left_Arrow.png; path = Precio_Images/left_Arrow.png; sourceTree = "<group>"; };
 		9299C8EB1F3D99900022500B /* right_Arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = right_Arrow.png; path = Precio_Images/right_Arrow.png; sourceTree = "<group>"; };
 		92A383091F3EBB6300CDB6BE /* PrecioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrecioViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +95,7 @@
 		92A6D5DD1F3CA3E80033959C /* receiver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = receiver.png; sourceTree = "<group>"; };
 		92A6D5DE1F3CA3E80033959C /* user-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-icon.png"; sourceTree = "<group>"; };
 		92FAC4501F3B2C0F0038C210 /* SliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
+		E62B638482DA59A25D23188B /* Pods-BuenPrecio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuenPrecio.release.xcconfig"; path = "Pods/Target Support Files/Pods-BuenPrecio/Pods-BuenPrecio.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,18 +103,34 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98EE2A1B02EB117E211CEF05 /* Pods_BuenPrecio.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D7D5D621F41B52D00531856 /* dataservice */ = {
+			isa = PBXGroup;
+			children = (
+				0D7D5D631F41B55A00531856 /* ReadData.swift */,
+				0D7D5D6D1F41E20700531856 /* Helper.swift */,
+				0D7D5D671F41D60000531856 /* Category.swift */,
+				0D7D5D6B1F41D61D00531856 /* Product.swift */,
+				0D7D5D691F41D61100531856 /* SubCategory.swift */,
+			);
+			name = dataservice;
+			sourceTree = "<group>";
+		};
 		0DEF44451F35E4000072218D = {
 			isa = PBXGroup;
 			children = (
+				0D7D5D651F41BC2900531856 /* GoogleService-Info.plist */,
 				92A3830D1F3EEAC000CDB6BE /* SearchViewController.swift */,
 				0DEF44501F35E4010072218D /* BuenPrecio */,
 				0DEF444F1F35E4010072218D /* Products */,
+				15446045008AE6183A453FF8 /* Pods */,
+				2EB83CE69CEA921724C9C661 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -113,6 +145,7 @@
 		0DEF44501F35E4010072218D /* BuenPrecio */ = {
 			isa = PBXGroup;
 			children = (
+				0D7D5D621F41B52D00531856 /* dataservice */,
 				0DEF44631F35E7650072218D /* resources */,
 				0DEF44511F35E4010072218D /* AppDelegate.swift */,
 				0DEF44531F35E4010072218D /* ViewController.swift */,
@@ -152,6 +185,23 @@
 			name = resources;
 			sourceTree = "<group>";
 		};
+		15446045008AE6183A453FF8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				21937105374208F781428EAC /* Pods-BuenPrecio.debug.xcconfig */,
+				E62B638482DA59A25D23188B /* Pods-BuenPrecio.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		2EB83CE69CEA921724C9C661 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				81085F6EB7F23F7A10079977 /* Pods_BuenPrecio.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		92A6D5C21F3C69810033959C /* Precio_Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -174,9 +224,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0DEF44601F35E4020072218D /* Build configuration list for PBXNativeTarget "BuenPrecio" */;
 			buildPhases = (
+				5DBF336B75E5B302556C8DF8 /* [CP] Check Pods Manifest.lock */,
 				0DEF444A1F35E4000072218D /* Sources */,
 				0DEF444B1F35E4000072218D /* Frameworks */,
 				0DEF444C1F35E4000072218D /* Resources */,
+				6F1BE858E86C9D9DCEAF7D12 /* [CP] Embed Pods Frameworks */,
+				66B9598147BA5267366B7959 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -240,6 +293,7 @@
 				92A6D5D01F3C69810033959C /* uesr.png in Resources */,
 				92A6D5D41F3C77BF0033959C /* leftArrow.png in Resources */,
 				92A6D5E11F3CA3E80033959C /* receiver.png in Resources */,
+				0D7D5D661F41BC2900531856 /* GoogleService-Info.plist in Resources */,
 				92A6D5CC1F3C69810033959C /* logout.png in Resources */,
 				0DEF44571F35E4010072218D /* Main.storyboard in Resources */,
 				0DEF44711F35F74B0072218D /* demoitem.png in Resources */,
@@ -257,20 +311,73 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		5DBF336B75E5B302556C8DF8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		66B9598147BA5267366B7959 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BuenPrecio/Pods-BuenPrecio-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6F1BE858E86C9D9DCEAF7D12 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BuenPrecio/Pods-BuenPrecio-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0DEF444A1F35E4000072218D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				92A6D5D81F3C9F290033959C /* ProfileViewController.swift in Sources */,
+				0D7D5D6E1F41E20700531856 /* Helper.swift in Sources */,
 				92A6D5DA1F3C9F3E0033959C /* ForgotPasswordVC.swift in Sources */,
 				92FAC4511F3B2C0F0038C210 /* SliderView.swift in Sources */,
+				0D7D5D641F41B55A00531856 /* ReadData.swift in Sources */,
+				0D7D5D6A1F41D61100531856 /* SubCategory.swift in Sources */,
 				92A3830E1F3EEAC000CDB6BE /* SearchViewController.swift in Sources */,
 				0DEF44541F35E4010072218D /* ViewController.swift in Sources */,
 				0DEF44521F35E4010072218D /* AppDelegate.swift in Sources */,
 				92A6D5D61F3C85790033959C /* LoginViewController.swift in Sources */,
 				92A3830A1F3EBB6300CDB6BE /* PrecioViewController.swift in Sources */,
 				92A6D5D21F3C6D780033959C /* CommonClass.swift in Sources */,
+				0D7D5D681F41D60000531856 /* Category.swift in Sources */,
+				0D7D5D6C1F41D61D00531856 /* Product.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,6 +500,7 @@
 		};
 		0DEF44611F35E4020072218D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 21937105374208F781428EAC /* Pods-BuenPrecio.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Ignis IT Solutions Private Limited (P428BUHYJR)";
@@ -401,7 +509,7 @@
 				INFOPLIST_FILE = BuenPrecio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.app.buenprecio.BuenPrecio;
+				PRODUCT_BUNDLE_IDENTIFIER = com.buenprecio.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "815cc72a-bc81-48e3-b3cd-159d8988fd14";
 				PROVISIONING_PROFILE_SPECIFIER = ignisdevprofile;
@@ -412,6 +520,7 @@
 		};
 		0DEF44621F35E4020072218D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E62B638482DA59A25D23188B /* Pods-BuenPrecio.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Ignis IT Solutions Private Limited (P428BUHYJR)";
@@ -420,7 +529,7 @@
 				INFOPLIST_FILE = BuenPrecio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.app.buenprecio.BuenPrecio;
+				PRODUCT_BUNDLE_IDENTIFIER = com.buenprecio.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "0e68c24e-e25d-4407-a709-e7140d7465ef";
 				PROVISIONING_PROFILE_SPECIFIER = IgnisAppStoreDis;
