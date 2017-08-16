@@ -4,16 +4,23 @@
 //
 //  Created by ignisit on 8/5/17.
 //  Copyright © 2017 ignisit. All rights reserved.
-// 
+//
 
 import UIKit
 
-class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecognizerDelegate {
+
+
+
+class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet var menuBtn: UIButton!
     @IBOutlet var searchBtn: UIButton!
     @IBOutlet var leftArrowBtn: UIButton!
     @IBOutlet var rightArrowBtn: UIButton!
+    @IBOutlet weak var prevcatLbl: UILabel!
+    @IBOutlet weak var currentCatFld: UITextField!
+    @IBOutlet weak var nextCatLbl: UILabel!
+
     @IBOutlet var productDetailView: UIView!
     @IBOutlet var firstProduct: UIView!
     @IBOutlet var secondProduct: UIView!
@@ -21,8 +28,13 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
     @IBOutlet var forthProduct: UIView!
     @IBOutlet var closePopUpBtn: UIButton!
     
+    
     var slider: SliderView!
     var commonC = CommonClass.sharedInstan()
+    var catPicker: UIPickerView!
+    
+    var currentCategoryIndex = -1
+    var allCategories = [Category]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +69,35 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
         
         closePopUpBtn.layer.cornerRadius = closePopUpBtn.frame.size.height/2
         closePopUpBtn.layer.masksToBounds = true
+        
+        catPicker = UIPickerView.init()
+        catPicker.dataSource = self
+        catPicker.delegate = self
+        
+        let readData = ReadData.init()
+        readData.getCategories { (categories) in
+            if categories.count > 0 {
+                self.allCategories = categories
+                if self.currentCategoryIndex == -1 {
+                    self.currentCategoryIndex = self.allCategories.count/2
+                    self.updateCategoryViewer(animate: false)
+                    self.currentCatFld.inputView = self.catPicker
+                }
+            }
+        }
+//        readData.getAllSubcategories { (subcategories) in
+//            
+//        }
+//        readData.getSubcategories(forCategory: "restaurante") { (subcategories) in
+//            
+//        }
+//        readData.getAllProducts { (products) in
+//            
+//        }
+//        readData.getProducts(forSubcategory: "helado") { (products) in
+//            
+//        }
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -88,6 +129,33 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
         
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == currentCatFld {
+            if textField.text?.characters.count == 0 {
+                catPicker.selectRow(0, inComponent: 0, animated: true)
+            }
+            else {
+                catPicker.selectRow(currentCategoryIndex - 1, inComponent: 0, animated: true)
+            }
+        }
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return self.allCategories.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return self.allCategories[row].name
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        currentCategoryIndex = row
+        self.updateCategoryViewer(animate: false)
+    }
     
     @IBAction func closeProductDetailPage(_ sender: UIButton) {
         productDetailView.isHidden = true
@@ -97,6 +165,64 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    // Category Manage
+    func currentCatView(visible:Bool) {
+        self.currentCatFld.alpha = CGFloat(visible ? 1 : 0)
+    }
+    
+    func previousCatView(visible:Bool) {
+        self.prevcatLbl.alpha = CGFloat(visible ? 1 : 0)
+        self.leftArrowBtn.alpha = CGFloat(visible ? 1 : 0)
+    }
+    
+    func nextCatView(visible:Bool) {
+        self.nextCatLbl.alpha = CGFloat(visible ? 1 : 0)
+        self.rightArrowBtn.alpha = CGFloat(visible ? 1 : 0)
+    }
+    
+    func updateCategoryViewer(animate:Bool) {
+        let animateTime = animate ? 0.3 : 0
+        UIView.animate(withDuration: animateTime, animations: {
+            self.previousCatView(visible: false)
+            self.nextCatView(visible: false)
+            self.currentCatView(visible: false)
+        })
+        
+        if self.currentCategoryIndex > 0 {
+            self.prevcatLbl.text = allCategories[currentCategoryIndex-1].name
+            UIView.animate(withDuration: animateTime, animations: {
+                self.previousCatView(visible: true)
+            })
+        }
+        if self.currentCategoryIndex < (allCategories.count-1) {
+            self.nextCatLbl.text = allCategories[currentCategoryIndex+1].name
+            UIView.animate(withDuration: animateTime, animations: {
+                self.nextCatView(visible: true)
+            })
+        }
+        
+        currentCatFld.text = allCategories[currentCategoryIndex].name
+        UIView.animate(withDuration: animateTime, animations: {
+            self.currentCatView(visible: true)
+        })
+    }
+    
+    @IBAction func previouscategory(_ sender: Any) {
+        if self.currentCategoryIndex > 0 {
+            self.currentCategoryIndex -= 1
+            updateCategoryViewer(animate: true)
+        }
+    }
+    
+    
+    @IBAction func nextCategory(_ sender: Any) {
+        if self.currentCategoryIndex < (allCategories.count-1) {
+            self.currentCategoryIndex += 1
+            updateCategoryViewer(animate: true)
+        }
+    }
+    
     
     @IBAction func clickMenubtn(_ sender: UIButton) {
         menuBtn.isSelected = !menuBtn.isSelected

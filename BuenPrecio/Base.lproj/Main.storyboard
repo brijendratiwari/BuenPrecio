@@ -50,8 +50,11 @@
                                                     <constraint firstAttribute="height" constant="35" id="wpX-PE-2dT"/>
                                                 </constraints>
                                                 <state key="normal" backgroundImage="left-arrow.png"/>
+                                                <connections>
+                                                    <action selector="previouscategory:" destination="BYZ-38-t0r" eventType="touchUpInside" id="FEP-Va-6un"/>
+                                                </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tienda de Masco" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.29999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="npf-St-ZI0">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.29999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="npf-St-ZI0">
                                                 <rect key="frame" x="35" y="0.0" width="121" height="56"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                 <color key="textColor" red="0.36470588235294116" green="0.68235294117647061" blue="0.19215686274509802" alpha="1" colorSpace="calibratedRGB"/>
@@ -71,19 +74,22 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zUO-Pg-CrK">
                                         <rect key="frame" x="206" y="0.0" width="156" height="56"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Product Destacados" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.29999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="xkh-5C-UAV">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="HPC-jp-Axu">
                                                 <rect key="frame" x="10" y="0.0" width="136" height="56"/>
-                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                                <color key="textColor" name="selectedMenuItemTextColor" catalog="System" colorSpace="catalog"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="BYZ-38-t0r" id="zOD-Lw-9pR"/>
+                                                </connections>
+                                            </textField>
                                         </subviews>
                                         <color key="backgroundColor" red="0.36470588235294116" green="0.68235294117647061" blue="0.19215686274509802" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstItem="xkh-5C-UAV" firstAttribute="leading" secondItem="zUO-Pg-CrK" secondAttribute="leading" constant="10" id="5yD-50-O5f"/>
-                                            <constraint firstAttribute="bottom" secondItem="xkh-5C-UAV" secondAttribute="bottom" id="8np-ow-itW"/>
-                                            <constraint firstAttribute="trailing" secondItem="xkh-5C-UAV" secondAttribute="trailing" constant="10" id="9Mt-W2-kQD"/>
-                                            <constraint firstItem="xkh-5C-UAV" firstAttribute="top" secondItem="zUO-Pg-CrK" secondAttribute="top" id="VbI-lK-TeG"/>
+                                            <constraint firstItem="HPC-jp-Axu" firstAttribute="top" secondItem="zUO-Pg-CrK" secondAttribute="top" id="Dwj-KS-q5q"/>
+                                            <constraint firstAttribute="bottom" secondItem="HPC-jp-Axu" secondAttribute="bottom" id="aLe-ox-NrX"/>
+                                            <constraint firstAttribute="trailing" secondItem="HPC-jp-Axu" secondAttribute="trailing" constant="10" id="e0c-nn-MBe"/>
+                                            <constraint firstItem="HPC-jp-Axu" firstAttribute="leading" secondItem="zUO-Pg-CrK" secondAttribute="leading" constant="10" id="uiL-w4-5uV"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HZ1-bZ-JtH">
@@ -96,8 +102,11 @@
                                                     <constraint firstAttribute="height" constant="35" id="cu2-bs-BG7"/>
                                                 </constraints>
                                                 <state key="normal" backgroundImage="right-arrow.png"/>
+                                                <connections>
+                                                    <action selector="nextCategory:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uv3-Z3-hVQ"/>
+                                                </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dulces" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.29999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="57t-vK-bt0">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.29999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="57t-vK-bt0">
                                                 <rect key="frame" x="0.0" y="0.0" width="121" height="56"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                 <color key="textColor" red="0.36470588240000001" green="0.68235294120000001" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -344,10 +353,13 @@
                     <navigationItem key="navigationItem" id="u5w-v4-bMa"/>
                     <connections>
                         <outlet property="closePopUpBtn" destination="Z4r-8v-1c2" id="jKc-FQ-Lhw"/>
+                        <outlet property="currentCatFld" destination="HPC-jp-Axu" id="1rb-gS-9i3"/>
                         <outlet property="firstProduct" destination="1sE-O3-uNn" id="faw-0s-yVb"/>
                         <outlet property="forthProduct" destination="Q7y-Jr-mse" id="bFy-Tu-1yp"/>
                         <outlet property="leftArrowBtn" destination="cdT-RV-Cmr" id="UPv-6C-xOs"/>
                         <outlet property="menuBtn" destination="pjp-m8-mvJ" id="dch-Pj-dbW"/>
+                        <outlet property="nextCatLbl" destination="57t-vK-bt0" id="aCV-xi-Ldb"/>
+                        <outlet property="prevcatLbl" destination="npf-St-ZI0" id="K58-hQ-Dg7"/>
                         <outlet property="productDetailView" destination="qHx-90-ziU" id="xwC-vE-sBy"/>
                         <outlet property="rightArrowBtn" destination="gcb-N8-NIP" id="LcA-aZ-Y9I"/>
                         <outlet property="searchBtn" destination="CbJ-A8-hed" id="sbj-Mm-0UP"/>
