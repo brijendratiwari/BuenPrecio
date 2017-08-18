@@ -46,19 +46,30 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        productSearchBar.endEditing(true)
-        productView.isHidden = false
-        UIView.animate(withDuration: 1.25, animations: {
-            self.productView.transform = CGAffineTransform.init(translationX: 0, y: 0)
-        })
+        
+        
+//        productView.isHidden = false
+//        UIView.animate(withDuration: 1.25, animations: {
+//            self.productView.transform = CGAffineTransform.init(translationX: 0, y: 0)
+//        })
+        
+        if let searchText = searchBar.text, (searchBar.text?.characters.count)! > 0 {
+            productSearchBar.endEditing(true)
+            let vc: SearchResultViewController = (self.storyboard?.instantiateViewController(withIdentifier: "SearchResultViewController" as String))! as! SearchResultViewController
+            vc.searchString = searchText
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
     }
     
     @IBAction func productSearch(_ sender: UIButton) {
-        productSearchBar.endEditing(true)
-        productView.isHidden = false
-        UIView.animate(withDuration: 0.25, animations: {
-            self.productView.transform = CGAffineTransform.init(translationX: 0, y: 0)
-        })
+//        productSearchBar.endEditing(true)
+//        productView.isHidden = false
+//        UIView.animate(withDuration: 0.25, animations: {
+//            self.productView.transform = CGAffineTransform.init(translationX: 0, y: 0)
+//        })
+        
+        searchBarSearchButtonClicked(productSearchBar)
     }
     
     @IBAction func gotoHome(_ sender: UIButton) {

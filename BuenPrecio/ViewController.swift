@@ -7,7 +7,8 @@
 //
 
 import UIKit
-
+import SwiftLoader
+import FirebaseAuth
 
 
 
@@ -18,15 +19,20 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
     @IBOutlet var leftArrowBtn: UIButton!
     @IBOutlet var rightArrowBtn: UIButton!
     @IBOutlet weak var prevcatLbl: UILabel!
+    @IBOutlet weak var currentCatLbl: UILabel!
     @IBOutlet weak var currentCatFld: UITextField!
     @IBOutlet weak var nextCatLbl: UILabel!
 
-    @IBOutlet var productDetailView: UIView!
+    @IBOutlet var productDetailView: ProductDetailView!
     @IBOutlet var firstProduct: UIView!
     @IBOutlet var secondProduct: UIView!
     @IBOutlet var thirdProduct: UIView!
     @IBOutlet var forthProduct: UIView!
-    @IBOutlet var closePopUpBtn: UIButton!
+    
+    
+    @IBOutlet weak var productContainerView: ProductContainerView!
+    
+    @IBOutlet weak var productContainerViewHeight: NSLayoutConstraint!
     
     
     var slider: SliderView!
@@ -36,8 +42,28 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
     var currentCategoryIndex = -1
     var allCategories = [Category]()
     
+
+    var handle:AuthStateDidChangeListenerHandle?
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
+        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            self.slider.tableV.reloadData()
+
+            if (Auth.auth().currentUser != nil) && (Auth.auth().currentUser?.isEmailVerified)! {
+                let lastViewController = self.navigationController?.viewControllers.last
+                if lastViewController is LoginViewController {
+                    self.navigationController?.popViewController(animated: false)
+//                    let vc: UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "ProfileViewController" as String))!
+//                    self.navigationController?.pushViewController(vc, animated: false)
+                }
+                
+            }
+        }
+                
         // Do any additional setup after loading the view, typically from a nib.
         slider = SliderView.sharedLoader()
         let frm = CGRect.init(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
@@ -46,36 +72,17 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
         self.slider.transform = CGAffineTransform.init(translationX: -(self.view.frame.size.width + 56), y: 0)
         self.slider.swipMenuDelegate = self
         self.view.addSubview(slider)
-        
-        let firsttapGR = UITapGestureRecognizer(target: self, action: #selector(showFirstProductDetail))
-        firsttapGR.delegate = self
-        firsttapGR.numberOfTapsRequired = 2
-        firstProduct.addGestureRecognizer(firsttapGR)
-        
-        let secondtapGR = UITapGestureRecognizer(target: self, action: #selector(showSecondProductDetail))
-        secondtapGR.delegate = self
-        secondtapGR.numberOfTapsRequired = 2
-        secondProduct.addGestureRecognizer(secondtapGR)
-        
-        let thirdtapGR = UITapGestureRecognizer(target: self, action: #selector(showThirdProductDetail))
-        thirdtapGR.delegate = self
-        thirdtapGR.numberOfTapsRequired = 2
-        thirdProduct.addGestureRecognizer(thirdtapGR)
-        
-        let forthtapGR = UITapGestureRecognizer(target: self, action: #selector(showForthProductDetail))
-        forthtapGR.delegate = self
-        forthtapGR.numberOfTapsRequired = 2
-        forthProduct.addGestureRecognizer(forthtapGR)
-        
-        closePopUpBtn.layer.cornerRadius = closePopUpBtn.frame.size.height/2
-        closePopUpBtn.layer.masksToBounds = true
+
+    
         
         catPicker = UIPickerView.init()
         catPicker.dataSource = self
         catPicker.delegate = self
         
-        let readData = ReadData.init()
-        readData.getCategories { (categories) in
+        SwiftLoader.show(animated: true)
+        ReadData.shared.getCategories { (categories) in
+            SwiftLoader.hide()
+            
             if categories.count > 0 {
                 self.allCategories = categories
                 if self.currentCategoryIndex == -1 {
@@ -85,19 +92,10 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
                 }
             }
         }
-//        readData.getAllSubcategories { (subcategories) in
-//            
-//        }
-//        readData.getSubcategories(forCategory: "restaurante") { (subcategories) in
-//            
-//        }
-//        readData.getAllProducts { (products) in
-//            
-//        }
-//        readData.getProducts(forSubcategory: "helado") { (products) in
-//            
-//        }
         
+    }
+    @IBAction func showCatList(_ sender: Any) {
+        currentCatFld.becomeFirstResponder()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -109,25 +107,11 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
         
     }
     
-    func showFirstProductDetail() {
-        productDetailView.isHidden = false
+    
+    deinit {
+        Auth.auth().removeStateDidChangeListener(handle!)
     }
     
-    func showSecondProductDetail() {
-        productDetailView.isHidden = false
-    }
-    
-    func showThirdProductDetail() {
-        productDetailView.isHidden = false
-    }
-    
-    func showForthProductDetail() {
-        productDetailView.isHidden = false
-    }
-    
-    func firstProductLongGes() {
-        
-    }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == currentCatFld {
@@ -135,7 +119,7 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
                 catPicker.selectRow(0, inComponent: 0, animated: true)
             }
             else {
-                catPicker.selectRow(currentCategoryIndex - 1, inComponent: 0, animated: true)
+                catPicker.selectRow(currentCategoryIndex , inComponent: 0, animated: true)
             }
         }
     }
@@ -157,10 +141,7 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
         self.updateCategoryViewer(animate: false)
     }
     
-    @IBAction func closeProductDetailPage(_ sender: UIButton) {
-        productDetailView.isHidden = true
-    }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -168,7 +149,7 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
     
     // Category Manage
     func currentCatView(visible:Bool) {
-        self.currentCatFld.alpha = CGFloat(visible ? 1 : 0)
+        self.currentCatLbl.alpha = CGFloat(visible ? 1 : 0)
     }
     
     func previousCatView(visible:Bool) {
@@ -203,9 +184,24 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
         }
         
         currentCatFld.text = allCategories[currentCategoryIndex].name
+        currentCatLbl.text = allCategories[currentCategoryIndex].name
         UIView.animate(withDuration: animateTime, animations: {
             self.currentCatView(visible: true)
         })
+        
+        productContainerView.resetData()
+        
+        SwiftLoader.show(animated: true)
+
+        ReadData.shared.getProducts(forCategory: allCategories[currentCategoryIndex].name) { (products) in
+            SwiftLoader.hide()
+            
+            self.productContainerView.products = products
+            self.productContainerView.arrangeProducts()
+            self.productContainerView.subscribeForProductSelect(callBack: { (productView) in
+                self.productDetailView.showProduct(product: productView.product)
+            })
+        }
     }
     
     @IBAction func previouscategory(_ sender: Any) {
@@ -227,6 +223,8 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
     @IBAction func clickMenubtn(_ sender: UIButton) {
         menuBtn.isSelected = !menuBtn.isSelected
         if self.commonC.isSliderRemove {
+            self.slider.tableV.reloadData()
+            
             UIView.animate(withDuration: 0.25, animations: {
                 self.slider.transform = CGAffineTransform.init(translationX: 0, y: 0)
                 
@@ -258,5 +256,20 @@ class ViewController: UIViewController, sliderNavigationDelegate, UIGestureRecog
         let vc: UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "SearchViewController"))!
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
+    
+    
+    // Touches 
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+
+    }
+    
 }
 

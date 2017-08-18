@@ -15,23 +15,27 @@ class Category: NSObject {
     
     init(data:NSDictionary, key:String) {
         super.init()
-        let ky: String = data.allKeys[0] as! String
-        if ky == "name" {
-            name = data.value(forKey: "name") as! String
-            id = key
+        id = key
+        if let nameVal = data.value(forKey: "name") {
+            name = nameVal as! String
         }
         else {
-            var subCatDict: NSDictionary = data.value(forKey: ky) as! NSDictionary
-            print(subCatDict.allKeys)
-            
-            let dict: NSMutableArray = NSMutableArray.init()
-            
-            for arr in subCatDict {
-                name = arr.value as! String
-                id = arr.key as! String
-                dict.add(["name": name, "id": id])
+            let ky: String = data.allKeys[0] as! String
+
+            if data.value(forKey: ky) is NSDictionary {
+                let subCatDict: NSDictionary = data.value(forKey: ky) as! NSDictionary
+                print(subCatDict.allKeys)
+                
+                let dict: NSMutableArray = NSMutableArray.init()
+                
+                for arr in subCatDict {
+                    name = arr.value as! String
+                    id = arr.key as! String
+                    dict.add(["name": name, "id": id])
+                }
+                subCat = dict
             }
-            subCatDict = ["subcategory":dict]
+            
         }
     }
     

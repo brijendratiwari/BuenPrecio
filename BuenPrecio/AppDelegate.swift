@@ -10,6 +10,7 @@ import UIKit
 
 
 import Firebase
+import SwiftLoader
 
 
 @UIApplicationMain
@@ -22,6 +23,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         IQKeyboardManager.sharedManager().enable = true
         FirebaseApp.configure()
+        
+        
+        var config : SwiftLoader.Config = SwiftLoader.Config()
+        config.size = 150
+        config.spinnerColor = UIColor.init(red: 91/255, green: 171/255, blue: 48/255, alpha: 1)
+        config.foregroundColor = UIColor.black
+        config.foregroundAlpha = 0.5
+        
+        SwiftLoader.setConfig(config)
         
         return true
     }

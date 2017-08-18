@@ -26,7 +26,7 @@ class Product: NSObject {
         name = data.value(forKey: "name") as! String
         price = data.value(forKey: "price") as! NSNumber
         quantity = data.value(forKey: "quantity") as! NSNumber
-        special = HELPER.toBool(data.value(forKey: "special"))
+        special = Util.shared.toBool(data.value(forKey: "special"))
         subcategory = data.value(forKey: "subcategory") as! String
         id = key
     }

@@ -7,13 +7,14 @@
 ///Users/sanjay/Desktop/BuenPrecio/BuenPrecio/SliderView.swift:24:7: Type 'SliderView' does not conform to protocol 'UITableViewDataSource'
 
 import UIKit
+import FirebaseAuth
 
 protocol sliderNavigationDelegate: class {
     func swipeMenuOnTouchEnded(valStr: NSString)
 }
 
 class SliderView: UIView, UITableViewDataSource, UITableViewDelegate {
-
+    
     var backGroundView: UIView!
     var frontView: UIView!
     var tableV: UITableView!
@@ -24,12 +25,21 @@ class SliderView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     var commonC = CommonClass.sharedInstan()
     
-    var loggedOutMenuList: NSArray  = ["Inicio", "Inicio Sesión/Regístrate", "Contactar", "Términos y Condiciones"]
-    var loggedOutMenuImge: NSArray  = ["home", "uesr", "phone", "help"]
-    var loggedInMenuList: NSArray   = ["Inicio", "Mi Perfil", "Pedidos", "Contactar", "Cerrar Sesión", "Términos y Condiciones"]
-    var loggedInMenuImge: NSArray   = ["home", "signed_user", "shoping-basket-icon", "phone", "log_out", "help"]
-    var storyBoardIDLogout: NSArray = ["ViewController", "LoginViewController", "", "", ""]
-    var storyBoardIDLogIn: NSArray  = ["ViewController", "ProfileViewController", "", "", ""]
+    var loggedOutMenuList: NSArray  = [
+        ["name":"Inicio", "id":"home", "image":"home"],
+        ["name":"Inicio Sesión/Regístrate", "id":"login", "image":"user", "controller": "LoginViewController"],
+        ["name":"Contactar", "id":"contact_us", "image":"phone", "controller": ""],
+        ["name":"Términos y Condiciones", "id":"terms", "image":"help", "controller": ""]
+    ]
+    var loggedInMenuList: NSArray   = [
+        ["name":"Inicio", "id":"home", "image":"home"],
+        ["name":"Mi Perfil", "id":"profile", "image":"signed_user", "controller": "ProfileViewController"],
+        ["name":"Pedidos", "id":"orders", "image":"shopping-basket-icon", "controller": ""],
+        ["name":"Contactar", "id":"contact_us", "image":"phone", "controller": ""],
+        ["name":"Cerrar Sesión", "id":"logout", "image":"logout"],
+        ["name":"Términos y Condiciones", "id":"terms", "image":"help", "controller": ""]
+    ]
+    
     
     
     static var slider : SliderView? = nil
@@ -39,8 +49,9 @@ class SliderView: UIView, UITableViewDataSource, UITableViewDelegate {
         }
         return SliderView.slider!
     }
-
+    
     func initSlider(rect: CGRect) {
+        
         frm = CGRect.init(x: rect.origin.x, y: 56, width: rect.size.width, height: rect.size.height)
         self.frame = frm
         self.backgroundColor = UIColor.clear
@@ -67,30 +78,46 @@ class SliderView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.addSubview(frontView)
     }
     
+    
+    func getMenuItemArr() -> NSArray {
+        return ((Auth.auth().currentUser != nil) && (Auth.auth().currentUser?.isEmailVerified)!) ? loggedInMenuList : loggedOutMenuList
+    }
+    
+  
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return loggedOutMenuList.count
+        return getMenuItemArr().count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 1 {
+        let menuId = ((getMenuItemArr().object(at: indexPath.row) as? NSDictionary)?.value(forKey: "id") as! String)
+        
+        if menuId == "logout" || menuId == "home" {
             UIView.animate(withDuration: 0.25, animations: {
                 self.transform = CGAffineTransform.init(translationX: -((self.frontViewX * 2.5) + 56), y: 0)
             }, completion: { (success) in
                 self.commonC.isSliderRemove = true
-                self.swipMenuDelegate?.swipeMenuOnTouchEnded(valStr: "LoginViewController")
             })
-
+            if menuId == "logout" {
+                Login.shared.signOut()
+            }
         }
         else {
-            UIView.animate(withDuration: 0.25, animations: {
-                self.transform = CGAffineTransform.init(translationX: -((self.frontViewX * 2.5) + 56), y: 0)
-            }, completion: { (success) in
-                self.commonC.isSliderRemove = true
-            })
+            if let controller = ((getMenuItemArr().object(at: indexPath.row) as? NSDictionary)?.value(forKey: "controller") as? String) {
+                UIView.animate(withDuration: 0.25, animations: {
+                    self.transform = CGAffineTransform.init(translationX: -((self.frontViewX * 2.5) + 56), y: 0)
+                }, completion: { (success) in
+                    self.commonC.isSliderRemove = true
+                    if controller.characters.count > 0 {
+                        self.swipMenuDelegate?.swipeMenuOnTouchEnded(valStr: controller as NSString)
+                    }
+                })
+            }
+            
         }
     }
     
@@ -107,13 +134,13 @@ class SliderView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         let icon = UIImageView.init(frame: CGRect.init(x: 24, y: 17, width: 16, height: 16))
         icon.backgroundColor = UIColor.clear
-        icon.image = UIImage.init(named: (loggedOutMenuImge.object(at: indexPath.row) as? String)!)
+        icon.image = UIImage.init(named: (getMenuItemArr().object(at: indexPath.row) as? NSDictionary)?.value(forKey: "image") as! String)
         
         let titleStr = UILabel.init(frame: CGRect.init(x: 50, y: 10, width: cell.frame.size.width - 50, height: 30))
         titleStr.backgroundColor = UIColor.clear
         titleStr.textColor = UIColor.white
         titleStr.font = UIFont.systemFont(ofSize: 14)
-        titleStr.text = loggedOutMenuList.object(at: indexPath.row) as? String
+        titleStr.text = ((getMenuItemArr().object(at: indexPath.row) as? NSDictionary)?.value(forKey: "name") as! String)
         
         cell.addSubview(icon)
         cell.addSubview(titleStr)
@@ -129,6 +156,8 @@ class SliderView: UIView, UITableViewDataSource, UITableViewDelegate {
     var minimumPoint: CGFloat = 0.0
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
         let touch: UITouch = touches.first!
         let point: CGPoint = touch.location(in: self)
         startinpoint = point.x
@@ -136,6 +165,8 @@ class SliderView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
+        
         let touch: UITouch = touches.first!
         let point: CGPoint = touch.location(in: self)
         let xNewpoint: CGFloat = point.x
@@ -157,6 +188,8 @@ class SliderView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+        
         let touch: UITouch = touches.first!
         let point: CGPoint = touch.location(in: self)
         let xNewpoint: CGFloat = point.x
@@ -178,13 +211,15 @@ class SliderView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        
         let touch: UITouch = touches.first!
         let point: CGPoint = touch.location(in: self)
         let xNewpoint: CGFloat = point.x
         let diff: CGFloat = startinpoint - xNewpoint
         
         if (xNewpoint < startinpoint) && diff > frontView.frame.size.height/2 {
-            UIView.animate(withDuration: 0.2, animations: { 
+            UIView.animate(withDuration: 0.2, animations: {
                 self.frontView.transform = CGAffineTransform.init(translationX: -self.frontViewX, y: 0)
                 
             }, completion: { (success) in

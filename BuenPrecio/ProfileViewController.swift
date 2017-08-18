@@ -7,32 +7,43 @@
 //
 
 import UIKit
+import FirebaseAuth
+import SwiftLoader
 
 class ProfileViewController: UIViewController {
-
+    
     @IBOutlet var userName: UITextField!
     @IBOutlet var userEmail: UITextField!
     @IBOutlet var password: UITextField!
     @IBOutlet var phoneNo: UITextField!
     
+    var user:User?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        SwiftLoader.show(animated: true)
+        ReadData.shared.getUser(uid: (Auth.auth().currentUser?.uid)!) { (userData) in
+            
+            SwiftLoader.hide()
+            print("User \(userData.description)")
+            self.user = User.init(data: userData, key: (Auth.auth().currentUser?.uid)!)
+            
+            self.userName.text = self.user?.name
+            self.userEmail.text = self.user?.email
+            self.phoneNo.text = self.user?.phone
+            
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let arr: NSArray = [userName, userEmail, password, phoneNo]
-        
-        for txt in arr {
-            (txt as AnyObject).layer.borderWidth = 1.0
-            (txt as AnyObject).layer.borderColor = UIColor.lightGray.cgColor
-        }
-        self.updateView(txtField: userName, imgStr: "user-icon")
-        self.updateView(txtField: userEmail, imgStr: "mail")
-        self.updateView(txtField: password, imgStr: "lock")
-        self.updateView(txtField: phoneNo, imgStr: "receiver")
+        Util.shared.updateView(txtField: userName, imgStr: "user-icon")
+        Util.shared.updateView(txtField: userEmail, imgStr: "mail")
+        Util.shared.updateView(txtField: password, imgStr: "lock")
+        Util.shared.updateView(txtField: phoneNo, imgStr: "receiver")
     }
     
     override func didReceiveMemoryWarning() {
@@ -40,54 +51,93 @@ class ProfileViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func updateView(txtField: UITextField, imgStr: String) {
-        
-        var val: NSInteger = 20
-        
-        if txtField == phoneNo {
-            val = 30
-        }
-        
-        let vw = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 40, height: 40))
-        vw.backgroundColor = UIColor.clear
-        
-        let imageView = UIImageView(frame: CGRect(x: 10, y: 10, width: val, height: 20))
-        imageView.image = UIImage.init(named: imgStr)
-        imageView.tintColor = UIColor.clear
-        
-        vw.addSubview(imageView)
-        
-        txtField.leftView = vw
-        txtField.leftViewMode = UITextFieldViewMode.always
+    func updateUserData() {
+        SwiftLoader.show(animated: true)
+        WriteData.shared.updateUser(uid: (self.user?.id)!, email: self.userEmail.text, name: self.userName.text, phone: self.phoneNo.text, completion: { (status, message) in
+            SwiftLoader.hide()
+            if status {
+                Login.shared.showAlert(title: "Profile Success!", message: "User profile updated successfully.")
+            } else {
+                Login.shared.showAlert(title: "Profile Error!", message: message)
+            }
+        })
     }
     
-    func isValidEmail(testStr:String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+    func promptTheUser(completion:@escaping (AuthCredential)->Void) {
+        let alert = UIAlertController(title: "Authentication!", message: "Enter email and password.", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Signin", style: UIAlertActionStyle.default, handler: { (alertAction) in
+            let emailField = alert.textFields![0]
+            let passwordField = alert.textFields![1]
+            
+            let credential: AuthCredential = EmailAuthProvider.credential(withEmail: emailField.text!, password: passwordField.text!)
+            completion(credential)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+        alert.addTextField { (textField) in
+            textField.placeholder = "Email"
+            textField.text = Auth.auth().currentUser?.email
+        }
+        alert.addTextField { (textField) in
+            textField.placeholder = "Password"
+            textField.isSecureTextEntry = true
+        }
         
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailTest.evaluate(with: testStr)
+        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: {
+            
+        })
     }
     
     @IBAction func updateUserProfile(_ sender: UIButton) {
-        if ((userName.text?.characters.count)! > 2) && (self.isValidEmail(testStr: userEmail.text!) == true) && ((phoneNo.text?.characters.count)! == 10) && ((password.text?.characters.count)! > 4) {
+        if ((userName.text?.characters.count)! > 2) && (Util.shared.isValidEmail(testStr: userEmail.text!) == true) && ((phoneNo.text?.characters.count)! == 10) {
             
+            if let pass = password.text, (password.text?.characters.count)! > 0 {
+                if ((password.text?.characters.count)! > 4)  {
+                    
+                    let user = Auth.auth().currentUser
+                    self.promptTheUser(completion: { (credential) in
+                        
+                        SwiftLoader.show(animated: true)
+                        
+                        user?.reauthenticate(with: credential) { error in
+                            if let error = error {
+                                SwiftLoader.hide()
+                                Login.shared.showAlert(title: "Profile Error!", message: error.localizedDescription)
+                            } else {
+                                Auth.auth().currentUser?.updatePassword(to: pass, completion: { (error) in
+                                    
+                                    SwiftLoader.hide()
+                                    
+                                    if let err = error {
+                                        Login.shared.showAlert(title: "Profile Error!", message: err.localizedDescription)
+                                    } else {
+                                        self.updateUserData()
+                                    }
+                                })
+                            }
+                        }
+                    })
+                } else {
+                    Login.shared.showAlert(title: "Profile Error!", message: "password should be more then 4 digit")
+                }
+                
+            } else {
+                self.updateUserData()
+            }
         }
         else if ((userName.text?.characters.count)! < 3) {
-            print("Please enter valid username")
+            Login.shared.showAlert(title: "Profile Error!", message: "Please enter valid username")
         }
-        else if (self.isValidEmail(testStr: userEmail.text!) == false) {
-            print("Please enter valid email address")
+        else if (Util.shared.isValidEmail(testStr: userEmail.text!) == false) {
+            Login.shared.showAlert(title: "Profile Error!", message: "Please enter valid email address")
         }
         else if ((phoneNo.text?.characters.count)! != 10) {
-            print("Please enter vaild phone number")
+            Login.shared.showAlert(title: "Profile Error!", message: "Please enter vaild phone number")
         }
-        else {
-            print("password should be more then 4 digit")
-        }
+        
     }
     
     @IBAction func gotoHome(_ sender: UIButton) {
         self.navigationController?.popToRootViewController(animated: true)
     }
-
+    
 }

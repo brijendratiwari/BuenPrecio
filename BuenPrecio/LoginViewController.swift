@@ -24,6 +24,8 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+       
+
         
         let bottomLyr = CALayer.init()
         bottomLyr.frame = CGRect.init(x: 0, y: forgotPasswordBtn.frame.size.height - 1.5, width: forgotPasswordBtn.frame.size.width, height: 1.5)
@@ -45,53 +47,31 @@ class LoginViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let arr: NSArray = [emailId, password, userName, userEmail, userPassword]
-        for txt in arr {
-            (txt as AnyObject).layer.borderWidth = 1.0
-            (txt as AnyObject).layer.borderColor = UIColor.lightGray.cgColor
-        }
-        self.updateView(txtField: emailId, imgStr: "mail")
-        self.updateView(txtField: userEmail, imgStr: "mail")
-        self.updateView(txtField: password, imgStr: "lock")
-        self.updateView(txtField: userPassword, imgStr: "lock")
-        self.updateView(txtField: userName, imgStr: "user-icon")
+       
+        Util.shared.updateView(txtField: emailId, imgStr: "mail")
+        Util.shared.updateView(txtField: userEmail, imgStr: "mail")
+        Util.shared.updateView(txtField: password, imgStr: "lock")
+        Util.shared.updateView(txtField: userPassword, imgStr: "lock")
+        Util.shared.updateView(txtField: userName, imgStr: "user-icon")
     }
+  
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    func updateView(txtField: UITextField, imgStr: String) {
-        let vw = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 40, height: 40))
-        vw.backgroundColor = UIColor.clear
-        
-        let imageView = UIImageView(frame: CGRect(x: 10, y: 10, width: 20, height: 20))
-        imageView.image = UIImage.init(named: imgStr)
-        imageView.tintColor = UIColor.clear
-        
-        vw.addSubview(imageView)
-        
-        txtField.leftView = vw
-        txtField.leftViewMode = UITextFieldViewMode.always
-    }
-    
-    func isValidEmail(testStr:String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailTest.evaluate(with: testStr)
-    }
+
 
     @IBAction func userLogin(_ sender: UIButton) {
-        if ((self.isValidEmail(testStr: emailId.text!)) == true) && (password.text?.characters.count)! > 4 {
-            
+        if ((Util.shared.isValidEmail(testStr: emailId.text!)) == true) && (password.text?.characters.count)! > 4 {
+            Login.shared.signIn(email: emailId.text, password: password.text)
         }
-        else if ((self.isValidEmail(testStr: emailId.text!)) == false) {
-            print("Invalid Email")
+        else if ((Util.shared.isValidEmail(testStr: emailId.text!)) == false) {
+            Login.shared.showAlert(title: "Login Error!", message: "Invalid Email")
         }
         else {
-            print("Password Should Be more than 4 digit")
+            Login.shared.showAlert(title: "Login Error!", message: "Password Should Be more than 4 digit")
         }
     }
     
@@ -109,17 +89,17 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func registerUser(_ sender: UIButton) {
-        if ((self.isValidEmail(testStr: userEmail.text!)) == true) && ((userPassword.text?.characters.count)! > 4) && (userName.text?.characters.count)! > 2 {
-            
+        if ((Util.shared.isValidEmail(testStr: userEmail.text!)) == true) && ((userPassword.text?.characters.count)! > 4) && (userName.text?.characters.count)! > 2 {
+            Login.shared.createUser(email: userEmail.text, password: userPassword.text, name: userName.text)
         }
-        else if ((self.isValidEmail(testStr: userEmail.text!)) == false) {
-            print("Invalid Email")
+        else if ((Util.shared.isValidEmail(testStr: userEmail.text!)) == false) {
+            Login.shared.showAlert(title: "Signup Error!", message: "Invalid Email")
         }
         else if (userName.text?.characters.count)! < 3 {
-            print("Please enter user name")
+            Login.shared.showAlert(title: "Signup Error!", message: "Please enter user name")
         }
         else {
-            print("Password Should Be more than 4 digit")
+            Login.shared.showAlert(title: "Signup Error!", message: "Password Should Be more than 4 digit")
         }
     }
     
