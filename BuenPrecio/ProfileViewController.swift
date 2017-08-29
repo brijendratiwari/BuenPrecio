@@ -40,10 +40,10 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        Util.shared.updateView(txtField: userName, imgStr: "user-icon")
-        Util.shared.updateView(txtField: userEmail, imgStr: "mail")
-        Util.shared.updateView(txtField: password, imgStr: "lock")
-        Util.shared.updateView(txtField: phoneNo, imgStr: "receiver")
+        Util.shared.updateView(txtField: userName, imgStr: "ic_person")
+        Util.shared.updateView(txtField: userEmail, imgStr: "ic_email")
+        Util.shared.updateView(txtField: password, imgStr: "ic_lock_outline")
+        Util.shared.updateView(txtField: phoneNo, imgStr: "ic_phone")
     }
     
     override func didReceiveMemoryWarning() {

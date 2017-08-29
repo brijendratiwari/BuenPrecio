@@ -18,41 +18,83 @@ class ProductView: UIView {
     
     var product:Product!
     
-    /*
-     // Only override draw() if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func draw(_ rect: CGRect) {
-     // Drawing code
-     }
-     */
+    
+    override func layoutSubviews() {
+        priceLbl.layer.borderWidth = 2
+        priceLbl.layer.borderColor = UIColor.white.cgColor
+        
+        if (UIApplication.shared.keyWindow?.bounds.width)! < CGFloat(500) {
+            priceLbl.font = UIFont.systemFont(ofSize: 11)
+        }
+    }
     
     func setProduct(product:Product) {
         self.product = product
         self.priceLbl.text = "\(product.price!) $"
-       
+        
         self.photoImgV.sd_setImage(with: NSURL.init(string: product.image) as URL?, placeholderImage: UIImage.init(named: "no-image.png"), options: SDWebImageOptions.continueInBackground) { (img, error, cahcheType, url)  in
             
         }
     }
     
+    private func scaleAnimation(scaleFrom:CGFloat, scaleTo:CGFloat, animationTime:Double, callBack: @escaping (Void)->Void) {
+        UIView.animate(withDuration: animationTime, animations: {
+            self.photoImgV.transform = CGAffineTransform.init(scaleX: scaleFrom, y: scaleFrom)
+            self.priceLbl.transform =  CGAffineTransform.init(scaleX: scaleFrom, y: scaleFrom)
+        }) { (status) in
+            UIView.animate(withDuration: animationTime, animations: {
+                self.photoImgV.transform = CGAffineTransform.init(scaleX: scaleTo, y: scaleTo)
+                self.priceLbl.transform = CGAffineTransform.init(scaleX: scaleTo, y: scaleTo)
+            }) { (status ) in
+                callBack()
+            }
+        }
+    }
     
     func pickAnimation() {
-        UIView.animate(withDuration: 0.3, animations:{
-            self.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
-        }) {(status) in
+        let scaleFrom:CGFloat = 1.3
+        let scaleTo:CGFloat = 1.1
+        let animationTime = 0.2
+        scaleAnimation(scaleFrom: scaleFrom, scaleTo: scaleTo, animationTime: animationTime) { () in
             
         }
     }
     
     
+    func leaveAnimation(callBack: @escaping (Void)->Void) {
+        let scaleFrom:CGFloat = 0.6
+        let scaleTo:CGFloat = 1
+        let animationTime = 0.3
+        scaleAnimation(scaleFrom: scaleFrom, scaleTo: scaleTo, animationTime: animationTime) { () in
+            callBack()
+        }
+    }
     
-    func leaveAnimation() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.transform = CGAffineTransform.init(scaleX: 0.8, y: 0.8)
+    func moveToCartAnimation(cartView:UIView, callBack: @escaping (Void)->Void) {
+        cartView.superview?.bringSubview(toFront: cartView)
+        
+        UIView.animate(withDuration: 0.4, animations: {
+            self.center = CGPoint.init(x: cartView.center.x, y: cartView.frame.origin.y)
         }) { (status) in
-            UIView.animate(withDuration: 0.3) {
-                self.transform = CGAffineTransform.init(scaleX: 1, y: 1)
+            
+            let scaleTo:CGFloat = 2
+            UIView.animate(withDuration: 0.3, animations: {
+                self.photoImgV.transform = CGAffineTransform.init(scaleX: scaleTo, y: scaleTo)
+//                self.priceLbl.transform = CGAffineTransform.init(scaleX: scaleTo, y: scaleTo)
+            }) { (status) in
+                let scaleToX:CGFloat = 0.2
+                let scaleToY:CGFloat = 0.4
+                UIView.animate(withDuration: 0.8, animations: {
+                    self.center = CGPoint.init(x: cartView.center.x, y: cartView.center.y)
+                    self.photoImgV.transform = CGAffineTransform.init(scaleX: scaleToX, y: scaleToY)
+                    self.priceLbl.transform = CGAffineTransform.init(scaleX: 0, y: 0)
+                }) { (status) in
+                    callBack()
+                }
             }
+            
+            
+            
         }
     }
     
@@ -66,6 +108,7 @@ class ProductView: UIView {
             }
             if view is UIImageView {
                 clone.photoImgV = view as? UIImageView
+                clone.photoImgV.image = self.photoImgV.image?.copy() as! UIImage
             }
         }
         return clone

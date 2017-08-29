@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftLoader
+import Toast_Swift
 
 class SearchResultViewController: UIViewController {
 
@@ -15,22 +16,32 @@ class SearchResultViewController: UIViewController {
     @IBOutlet weak var searchLabel: UILabel!
    var searchString:String?
     
+    @IBOutlet weak var cartView: UIImageView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.productContainerView.containerType = ProductContainerView.ContainerType.TwoLine
+        
         
         if let searchString = searchString {
             searchLabel.text = searchString
             
-            ReadData.shared.searchProduct(keyword: searchString) { (product) in
-                print(product.debugDescription)
-            }
+            
             
             SwiftLoader.show(animated: true)
             productContainerView.resetData()
-
+            productContainerView.mainView = self.view
+            productContainerView.cartView = cartView
+            
             ReadData.shared.searchProduct(keyword: searchString) { (products) in
                 SwiftLoader.hide()
                 
+                if products.count == 0 {
+//                    self.view.makeToast("Product not available")
+                    self.view.makeToast("Producto no disponible", duration: 2, position: ToastPosition.center)
+                    
+                }
                 self.productContainerView.products = products
                 self.productContainerView.arrangeProducts()
                 self.productContainerView.subscribeForProductSelect(callBack: { (productView) in

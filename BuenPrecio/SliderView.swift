@@ -11,6 +11,7 @@ import FirebaseAuth
 
 protocol sliderNavigationDelegate: class {
     func swipeMenuOnTouchEnded(valStr: NSString)
+    func homeButtonPressed()
 }
 
 class SliderView: UIView, UITableViewDataSource, UITableViewDelegate {
@@ -28,12 +29,14 @@ class SliderView: UIView, UITableViewDataSource, UITableViewDelegate {
     var loggedOutMenuList: NSArray  = [
         ["name":"Inicio", "id":"home", "image":"home"],
         ["name":"Inicio Sesión/Regístrate", "id":"login", "image":"user", "controller": "LoginViewController"],
+        ["name":"Categorias", "id":"category", "image":"ic_list"],
         ["name":"Contactar", "id":"contact_us", "image":"phone", "controller": ""],
         ["name":"Términos y Condiciones", "id":"terms", "image":"help", "controller": ""]
     ]
     var loggedInMenuList: NSArray   = [
         ["name":"Inicio", "id":"home", "image":"home"],
         ["name":"Mi Perfil", "id":"profile", "image":"signed_user", "controller": "ProfileViewController"],
+        ["name":"Categorias", "id":"category", "image":"ic_list"],
         ["name":"Pedidos", "id":"orders", "image":"shopping-basket-icon", "controller": ""],
         ["name":"Contactar", "id":"contact_us", "image":"phone", "controller": ""],
         ["name":"Cerrar Sesión", "id":"logout", "image":"logout"],
@@ -83,7 +86,7 @@ class SliderView: UIView, UITableViewDataSource, UITableViewDelegate {
         return ((Auth.auth().currentUser != nil) && (Auth.auth().currentUser?.isEmailVerified)!) ? loggedInMenuList : loggedOutMenuList
     }
     
-  
+    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -102,11 +105,24 @@ class SliderView: UIView, UITableViewDataSource, UITableViewDelegate {
             }, completion: { (success) in
                 self.commonC.isSliderRemove = true
             })
+            
+            if self.swipMenuDelegate?.homeButtonPressed != nil {
+                self.swipMenuDelegate?.homeButtonPressed()
+            }
+            
             if menuId == "logout" {
                 Login.shared.signOut()
             }
-        }
-        else {
+        } else if menuId == "category" {
+            UIView.animate(withDuration: 0.25, animations: {
+                self.transform = CGAffineTransform.init(translationX: -((self.frontViewX * 2.5) + 56), y: 0)
+            }, completion: { (success) in
+                self.commonC.isSliderRemove = true
+                
+                
+                Util.shared.viewsHolder?.categoriesDisplayView.openView(onView: Util.shared.homeViewCtrl!.view, withAnimation: true)
+            })
+        } else {
             if let controller = ((getMenuItemArr().object(at: indexPath.row) as? NSDictionary)?.value(forKey: "controller") as? String) {
                 UIView.animate(withDuration: 0.25, animations: {
                     self.transform = CGAffineTransform.init(translationX: -((self.frontViewX * 2.5) + 56), y: 0)
@@ -135,6 +151,7 @@ class SliderView: UIView, UITableViewDataSource, UITableViewDelegate {
         let icon = UIImageView.init(frame: CGRect.init(x: 24, y: 17, width: 16, height: 16))
         icon.backgroundColor = UIColor.clear
         icon.image = UIImage.init(named: (getMenuItemArr().object(at: indexPath.row) as? NSDictionary)?.value(forKey: "image") as! String)
+        Util.shared.changeImageColor(imageV: icon, color: UIColor.white)
         
         let titleStr = UILabel.init(frame: CGRect.init(x: 50, y: 10, width: cell.frame.size.width - 50, height: 30))
         titleStr.backgroundColor = UIColor.clear

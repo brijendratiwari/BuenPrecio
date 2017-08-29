@@ -10,4 +10,5 @@ target 'BuenPrecio' do
   pod 'SDWebImage', '~> 4.0'
   pod 'Firebase/Auth'
   pod 'SwiftLoader'
+  pod 'Toast-Swift', '~> 2.0.0'
 end

@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>353860813501-u5v24vvkbd071f05i46uqvor9c0qe13i.apps.googleusercontent.com</string>
+	<string>353860813501-ubvkun4ihk40cmoeo82ed629tialgdao.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.353860813501-u5v24vvkbd071f05i46uqvor9c0qe13i</string>
+	<string>com.googleusercontent.apps.353860813501-ubvkun4ihk40cmoeo82ed629tialgdao</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBco-oYg27X-TD-UvvpRVkSLF331nJ-NoU</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.buenprecio.ios</string>
+	<string>com.buenprecio.app</string>
 	<key>PROJECT_ID</key>
 	<string>buen-precio</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:353860813501:ios:54cae868b15bb5e1</string>
+	<string>1:353860813501:ios:1a1dbadd1ac9203f</string>
 	<key>DATABASE_URL</key>
 	<string>https://buen-precio.firebaseio.com</string>
 </dict>

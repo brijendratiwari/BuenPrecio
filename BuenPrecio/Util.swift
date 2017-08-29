@@ -12,7 +12,9 @@ import UIKit
 class Util: NSObject {
     static let shared = Util()
     
-    
+    public var viewsHolder:CommonViewsContainController?
+    public var homeViewCtrl:ViewController?
+
     public func toBool(_ val:Any?) -> Bool!{
         if let boolVal = val as? Bool {
             return boolVal
@@ -29,6 +31,7 @@ class Util: NSObject {
         let imageView = UIImageView(frame: CGRect(x: 10, y: 10, width: 20, height: 20))
         imageView.image = UIImage.init(named: imgStr)
         imageView.tintColor = UIColor.clear
+        Util.shared.changeImageColor(imageV: imageView, color: UIColor.lightGray)
         
         vw.addSubview(imageView)
         
@@ -46,5 +49,10 @@ class Util: NSObject {
         return emailTest.evaluate(with: testStr)
     }
     
+    func changeImageColor(imageV: UIImageView, color:UIColor) {
+        let templateImage = imageV.image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        imageV.image = templateImage
+        imageV.tintColor = color
+    }
     
 }

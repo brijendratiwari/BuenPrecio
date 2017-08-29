@@ -18,33 +18,60 @@ class ReadData:NSObject {
     
     
     func searchProduct(keyword:String, subscribe: @escaping (_ products:[Product]) -> Void) {
-        ref.child("Products").queryOrdered(byChild: "name").queryStarting(atValue: keyword.lowercased()).observe(DataEventType.value, with: { (snapshot) in
+        ref.child("Products").queryOrderedByValue().queryStarting(atValue: keyword.lowercased(), childKey: "name").observe(DataEventType.value, with: { (snapshot) in
             var arr = [Product]()
-            if let response = snapshot.value as? NSDictionary {
-                
-                for (key, value) in response {
-                    let product = value as! NSDictionary
-                    arr.append(Product.init(data: product, key: key as! String))
+            if snapshot.exists() {
+                for child in snapshot.children {
+                    let child = child as! DataSnapshot
+                    if let product = child.value as? [String: AnyObject] {
+                        let productObj = Product.init(data: product as NSDictionary, key: child.key)
+                        
+                        if let name = productObj.name {
+                            if (name as String).lowercased().contains(keyword.lowercased()) {
+                                arr.append(productObj)
+                            }
+                        }
+                    }
                 }
-                
             }
             subscribe(arr)
-           
+            
         })
     }
     
     func getCategories(subscribe: @escaping (_ categories:[Category]) -> Void) {
         ref.child("Category").observe(DataEventType.value, with: { (snapshot) in
-            let response = snapshot.value as? NSDictionary
             var arr = [Category]()
             
-            for (key, value) in response! {
-                let category = value as! NSMutableDictionary
-                arr.append(Category.init(data: category, key: key as! String))
+            for child in snapshot.children {
+                let child = child as! DataSnapshot
+                if let category = child.value as? [String: AnyObject] {
+                    arr.append(Category.init(data: category as NSDictionary, key: child.key))
+                }
             }
+            
             subscribe(arr)
         }) { (error) in
             subscribe([Category]())
+            print(error.localizedDescription)
+        }
+    }
+    
+    
+    func getAllfeaturedProducts(subscribe: @escaping (_ categories:[Product]) -> Void) {
+        ref.child("Products").queryOrdered(byChild: "special").queryEqual(toValue: true).observe(DataEventType.value, with: { (snapshot) in
+            var arr = [Product]()
+            
+            for child in snapshot.children {
+                let child = child as! DataSnapshot
+                if let product = child.value as? [String: AnyObject] {
+                    arr.append(Product.init(data: product as NSDictionary, key: child.key))
+                }
+            }
+            
+            subscribe(arr)
+        }) { (error) in
+            subscribe([Product]())
             print(error.localizedDescription)
         }
     }
@@ -54,10 +81,15 @@ class ReadData:NSObject {
             let response = snapshot.value as? NSDictionary
             var arr = [SubCategory]()
             
-            for (key, value) in response! {
-                let subCategory = value as! NSMutableDictionary
-                arr.append(SubCategory.init(data: subCategory, key: key as! String))
+            
+            for child in snapshot.children {
+                let child = child as! DataSnapshot
+                if let subCategory = child.value as? [String: AnyObject] {
+                    arr.append(SubCategory.init(data: subCategory as NSDictionary, key: child.key))
+                }
             }
+            
+            
             subscribe(arr)
         }) { (error) in
             subscribe([SubCategory]())
@@ -67,14 +99,16 @@ class ReadData:NSObject {
     
     func getSubcategories(forCategory:String, subscribe: @escaping (_ categories:[SubCategory]) -> Void) {
         ref.child("Subcategory").queryOrdered(byChild: "category").queryEqual(toValue: forCategory).observe(DataEventType.value, with: { (snapshot) in
-            let response = snapshot.value as? NSDictionary
             var arr = [SubCategory]()
             
-            for (key, value) in response! {
-                let subCategory = value as! NSMutableDictionary
-                arr.append(SubCategory.init(data: subCategory, key: key as! String))
+            for child in snapshot.children {
+                let child = child as! DataSnapshot
+                if let subCategory = child.value as? [String: AnyObject] {
+                    arr.append(SubCategory.init(data: subCategory as NSDictionary, key: child.key))
+                }
             }
             subscribe(arr)
+            
         }) { (error) in
             subscribe([SubCategory]())
             print(error.localizedDescription)
@@ -83,12 +117,13 @@ class ReadData:NSObject {
     
     func getAllProducts(subscribe: @escaping (_ categories:[Product]) -> Void) {
         ref.child("Products").observe(DataEventType.value, with: { (snapshot) in
-            let response = snapshot.value as? NSDictionary
             var arr = [Product]()
             
-            for (key, value) in response! {
-                let product = value as! NSMutableDictionary
-                arr.append(Product.init(data: product, key: key as! String))
+            for child in snapshot.children {
+                let child = child as! DataSnapshot
+                if let product = child.value as? [String: AnyObject] {
+                    arr.append(Product.init(data: product as NSDictionary, key: child.key))
+                }
             }
             subscribe(arr)
         }) { (error) in
@@ -122,13 +157,15 @@ class ReadData:NSObject {
     
     func getProducts(forSubcategory:String, subscribe: @escaping (_ categories:[Product]) -> Void) {
         ref.child("Products").queryOrdered(byChild: "subcategory").queryEqual(toValue: forSubcategory).observe(DataEventType.value, with: { (snapshot) in
-            let response = snapshot.value as? NSDictionary
             var arr = [Product]()
             
-            for (key, value) in response! {
-                let product = value as! NSMutableDictionary
-                arr.append(Product.init(data: product, key: key as! String))
+            for child in snapshot.children {
+                let child = child as! DataSnapshot
+                if let product = child.value as? [String: AnyObject] {
+                    arr.append(Product.init(data: product as NSDictionary, key: child.key))
+                }
             }
+            
             subscribe(arr)
         }) { (error) in
             subscribe([Product]())
